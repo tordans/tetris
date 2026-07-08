@@ -22,8 +22,6 @@ type GameViewProps = {
 }
 
 const SHOW_GHOST_KEY = 'tetris.showGhost'
-const SCREEN_PADDING = 32
-const SECTION_GAP = 12
 
 const readShowGhost = () => {
   const stored = localStorage.getItem(SHOW_GHOST_KEY)
@@ -35,8 +33,7 @@ const SWIPE_DOWN_THRESHOLD_PX = 40
 
 export const GameView = ({ onExit }: GameViewProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const headerRef = useRef<HTMLElement>(null)
-  const touchControlsRef = useRef<HTMLDivElement>(null)
+  const boardAreaRef = useRef<HTMLDivElement>(null)
   const stateRef = useRef<GameState>(startGame())
   const loopRef = useRef<ReturnType<typeof createGameLoop> | null>(null)
   const softDropIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -49,14 +46,12 @@ export const GameView = ({ onExit }: GameViewProps) => {
   const [showGhost, setShowGhost] = useState(readShowGhost)
 
   const computeCellSize = useCallback(() => {
-    const headerHeight = headerRef.current?.offsetHeight ?? 72
-    const touchHeight = touchControlsRef.current?.offsetHeight ?? 68
-    const availWidth = window.innerWidth - 24
-    const availHeight =
-      window.innerHeight - headerHeight - touchHeight - SCREEN_PADDING - SECTION_GAP
+    const boardArea = boardAreaRef.current
+    if (!boardArea) return 16
+    const { clientWidth, clientHeight } = boardArea
     return Math.max(
       8,
-      Math.floor(Math.min(availWidth / BOARD_WIDTH, availHeight / BOARD_HEIGHT)),
+      Math.floor(Math.min(clientWidth / BOARD_WIDTH, clientHeight / BOARD_HEIGHT)),
     )
   }, [])
 
@@ -79,8 +74,7 @@ export const GameView = ({ onExit }: GameViewProps) => {
     updateSize()
 
     const observer = new ResizeObserver(updateSize)
-    if (headerRef.current) observer.observe(headerRef.current)
-    if (touchControlsRef.current) observer.observe(touchControlsRef.current)
+    if (boardAreaRef.current) observer.observe(boardAreaRef.current)
 
     window.addEventListener('resize', updateSize)
     window.addEventListener('orientationchange', updateSize)
@@ -266,7 +260,7 @@ export const GameView = ({ onExit }: GameViewProps) => {
 
   return (
     <div className="screen game-screen">
-      <header ref={headerRef} className="game-header">
+      <header className="game-header">
         <motion.button
           type="button"
           className="btn btn-icon"
@@ -328,7 +322,7 @@ export const GameView = ({ onExit }: GameViewProps) => {
         </div>
       </header>
 
-      <div className="board-area">
+      <div ref={boardAreaRef} className="board-area">
         <canvas
           ref={canvasRef}
           data-board
@@ -380,16 +374,14 @@ export const GameView = ({ onExit }: GameViewProps) => {
         </AnimatePresence>
       </div>
 
-      <div ref={touchControlsRef}>
-        <TouchControls
-          disabled={controlsDisabled}
-          onLeft={() => applyAction(moveLeft)}
-          onRight={() => applyAction(moveRight)}
-          onRotate={() => applyAction(rotate)}
-          onSoftDropStart={startSoftDrop}
-          onSoftDropEnd={stopSoftDrop}
-        />
-      </div>
+      <TouchControls
+        disabled={controlsDisabled}
+        onLeft={() => applyAction(moveLeft)}
+        onRight={() => applyAction(moveRight)}
+        onRotate={() => applyAction(rotate)}
+        onSoftDropStart={startSoftDrop}
+        onSoftDropEnd={stopSoftDrop}
+      />
     </div>
   )
 }

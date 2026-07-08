@@ -34,6 +34,8 @@ bun run generate-icons
 
 Die App startet dann im Vollbildmodus wie eine native App.
 
+Layout-Hinweise für Standalone-Modus: [docs/ios-pwa-fullscreen.md](docs/ios-pwa-fullscreen.md).
+
 ## Deployment auf GitHub Pages
 
 1. Repository auf GitHub anlegen und lokal pushen:
