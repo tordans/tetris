@@ -103,7 +103,7 @@ export const renderGameBoard = (
   canvas: HTMLCanvasElement,
   state: GameState,
   cellSize: number,
-  clearingFlash?: number,
+  options?: { clearingFlash?: number; showGhost?: boolean },
 ) => {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
@@ -114,6 +114,7 @@ export const renderGameBoard = (
     ghost: getGhostPiece(state),
     cellSize,
     clearingRows: state.clearingRows,
-    clearingFlash,
+    clearingFlash: options?.clearingFlash,
+    showGhost: options?.showGhost,
   })
 }

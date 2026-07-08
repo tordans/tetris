@@ -3,6 +3,7 @@ export type PieceKind = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L'
 export type Cell = {
   kind: PieceKind
   color: string
+  pieceId: number
 }
 
 export type PieceShape = readonly (readonly number[])[]
@@ -79,6 +80,7 @@ export type ActivePiece = {
   rotation: number
   x: number
   y: number
+  pieceId: number
 }
 
 export const getPieceShape = (piece: ActivePiece) => {

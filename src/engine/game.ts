@@ -30,6 +30,7 @@ export type GameState = {
   phase: GamePhase
   clearingRows: number[] | null
   pendingClear: PendingClear | null
+  nextPieceId: number
 }
 
 export const CLEAR_DURATION_MS = 250
@@ -50,7 +51,8 @@ export const getLevelFromLines = (lines: number) => Math.floor(lines / 10) + 1
 export const spawnNextPiece = (state: GameState) => {
   const kind = state.bag.next()
   const next = state.bag.peek()
-  const active = createSpawnPiece(kind)
+  const pieceId = state.nextPieceId
+  const active = { ...createSpawnPiece(kind), pieceId }
 
   if (collides(state.board, active)) {
     return {
@@ -65,6 +67,7 @@ export const spawnNextPiece = (state: GameState) => {
     ...state,
     active,
     next,
+    nextPieceId: pieceId + 1,
     phase: 'playing' as const,
   }
 }
@@ -84,6 +87,7 @@ export const createGame = (rng?: Rng) => {
     phase: 'playing',
     clearingRows: null,
     pendingClear: null,
+    nextPieceId: 1,
   } satisfies GameState
 }
 

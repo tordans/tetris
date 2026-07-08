@@ -130,16 +130,45 @@ button {
 
 .game-screen {
   justify-content: flex-start;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  height: 100dvh;
+  padding: 1rem 1rem 0;
+  overflow: hidden;
 }
 
 .game-header {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) auto;
+  grid-template-columns: auto 1fr auto;
   gap: 0.5rem;
   width: 100%;
-  max-width: 400px;
   align-items: end;
+  flex-shrink: 0;
+}
+
+.game-header-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.game-header-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.btn-icon {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
 
 .stat {
@@ -187,6 +216,12 @@ button {
 .board-area {
   position: relative;
   touch-action: none;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
 }
 
 .game-board {
@@ -206,10 +241,39 @@ button {
   border-radius: 8px;
 }
 
-.pause-overlay p {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
+.pause-overlay {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.game-menu-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.game-menu-card h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+}
+
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.menu-toggle input {
+  width: 22px;
+  height: 22px;
+  accent-color: #6c63ff;
+  cursor: pointer;
 }
 
 .game-over-overlay {
@@ -249,9 +313,8 @@ button {
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
   width: 100%;
-  max-width: 400px;
-  margin-top: auto;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  flex-shrink: 0;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
 }
 
 .btn-control {

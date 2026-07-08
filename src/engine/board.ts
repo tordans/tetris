@@ -34,7 +34,7 @@ export const placePiece = (board: Board, piece: ActivePiece) => {
 
   for (const { x, y } of getPieceCells(piece)) {
     if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
-      next[y]![x] = { kind: piece.kind, color }
+      next[y]![x] = { kind: piece.kind, color, pieceId: piece.pieceId }
     }
   }
 
@@ -82,10 +82,9 @@ export const getGhostRow = (board: Board, piece: ActivePiece) => {
   return ghost.y
 }
 
-export const createSpawnPiece = (kind: PieceKind) =>
-  ({
-    kind,
-    rotation: 0,
-    x: Math.floor(BOARD_WIDTH / 2) - 2,
-    y: -1,
-  }) satisfies ActivePiece
+export const createSpawnPiece = (kind: PieceKind) => ({
+  kind,
+  rotation: 0,
+  x: Math.floor(BOARD_WIDTH / 2) - 2,
+  y: -1,
+})

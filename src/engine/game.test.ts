@@ -18,7 +18,7 @@ import {
   togglePause,
 } from './game'
 
-const CELL = { kind: 'I' as const, color: '#00e5ff' }
+const CELL = { kind: 'I' as const, color: '#00e5ff', pieceId: 1 }
 
 const fillRow = (board: ReturnType<typeof createEmptyBoard>, row: number) => {
   const next = board.map((r) => r.map((c) => c))
@@ -70,7 +70,7 @@ describe('game state machine', () => {
     let state = startGame(createSeededRng(3))
     state = {
       ...state,
-      active: { kind: 'J', rotation: 0, x: 8, y: 5 },
+      active: { kind: 'J', rotation: 0, x: 8, y: 5, pieceId: 1 },
     }
     const rotated = rotate(state)
     expect(rotated.active!.rotation).toBe(1)
@@ -82,7 +82,7 @@ describe('game state machine', () => {
     const state = {
       ...startGame(createSeededRng(1)),
       board: createEmptyBoard(),
-      active: { kind: 'I', rotation: 0, x: 0, y: 17 },
+      active: { kind: 'I', rotation: 0, x: 0, y: 17, pieceId: 1 },
     }
     const result = rotate(state)
     expect(result).toEqual(state)
@@ -106,7 +106,7 @@ describe('game state machine', () => {
     let state = startGame(createSeededRng(10))
     state = {
       ...state,
-      active: { kind: 'O', rotation: 0, x: 4, y: 18 },
+      active: { kind: 'O', rotation: 0, x: 4, y: 18, pieceId: 1 },
       board: fillRow(createEmptyBoard(), 19),
     }
     state = softDrop(state)
@@ -127,7 +127,7 @@ describe('game state machine', () => {
       ...state,
       level: 1,
       board,
-      active: { kind: 'O', rotation: 0, x: 4, y: 18 },
+      active: { kind: 'O', rotation: 0, x: 4, y: 18, pieceId: 1 },
     }
     state = lockAndFinish(state)
     expect(state.score).toBe(300)
@@ -143,7 +143,7 @@ describe('game state machine', () => {
       ...state,
       level: 1,
       board,
-      active: { kind: 'I', rotation: 0, x: 0, y: 18 },
+      active: { kind: 'I', rotation: 0, x: 0, y: 18, pieceId: 1 },
     }
     state = lockAndFinish(state)
     expect(state.score).toBe(500)
@@ -161,7 +161,7 @@ describe('game state machine', () => {
       lines: 6,
       level: 2,
       board,
-      active: { kind: 'I', rotation: 0, x: 0, y: 18 },
+      active: { kind: 'I', rotation: 0, x: 0, y: 18, pieceId: 1 },
     }
     state = lockAndFinish(state)
     expect(state.score).toBe(1600)
@@ -175,7 +175,7 @@ describe('game state machine', () => {
       ...state,
       lines: 10,
       level: 2,
-      active: { kind: 'O', rotation: 0, x: 4, y: 18 },
+      active: { kind: 'O', rotation: 0, x: 4, y: 18, pieceId: 1 },
       board: fillRow(createEmptyBoard(), 19),
     }
     state = lockAndFinish(state)
@@ -214,11 +214,11 @@ describe('game state machine', () => {
 
   test('ghost piece lands on stacked cells', () => {
     let board = createEmptyBoard()
-    board = placePiece(board, { kind: 'O', rotation: 0, x: 4, y: 12 })
+    board = placePiece(board, { kind: 'O', rotation: 0, x: 4, y: 12, pieceId: 1 })
     const state = {
       ...startGame(createSeededRng(8)),
       board,
-      active: { kind: 'O', rotation: 0, x: 4, y: 0 },
+      active: { kind: 'O', rotation: 0, x: 4, y: 0, pieceId: 2 },
     }
     const ghost = getGhostPiece(state)
     expect(ghost).not.toBeNull()
@@ -230,7 +230,7 @@ describe('game state machine', () => {
     let state = startGame(createSeededRng(10))
     state = {
       ...state,
-      active: { kind: 'O', rotation: 0, x: 4, y: 18 },
+      active: { kind: 'O', rotation: 0, x: 4, y: 18, pieceId: 1 },
       board: fillRow(createEmptyBoard(), 19),
     }
     state = softDrop(state)
